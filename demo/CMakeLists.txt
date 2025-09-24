@@ -2,7 +2,7 @@
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(DAWN_SOURCE_DIR ${CMAKE_SOURCE_DIR}/dawn)
+set(Dawn_DIR "$<IF:$<CONFIG:Debug>,${Dawn_Debug_DIR},${Dawn_Release_DIR}>")
 
 file(GLOB SRC
     "*.cpp"
@@ -28,17 +28,16 @@ add_executable(${CMAKE_PROJECT_NAME}
 
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     ${glm_INCLUDE_DIR}
-    ${CMAKE_SOURCE_DIR}/package/$<CONFIG>/include
+    ${Dawn_DIR}/include
 )
 
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE 
-    ${CMAKE_SOURCE_DIR}/package/$<CONFIG>/lib/webgpu_dawn.lib
+    ${Dawn_DIR}/lib/webgpu_dawn.lib
     SDL3::SDL3
 )
 
-
-set(DAWN_RUNTIME_LIB ${CMAKE_SOURCE_DIR}/package/$<CONFIG>/bin/webgpu_dawn.dll)
-
+# Copy webgpu dll next to the executable
+set(DAWN_RUNTIME_LIB ${Dawn_DIR}/bin/webgpu_dawn.dll)
 add_custom_command(
     TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E echo "Copying '${DAWN_RUNTIME_LIB}' to '$<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>'..."
@@ -50,9 +49,7 @@ add_custom_command(
 
 message("------------------------------------------------------------------------------")
 message(" Debug Info:")
-message("   CMAKE_BUILD_TYPE:  " ${CMAKE_BUILD_TYPE})
-message("   CMAKE_BINARY_DIR:  " ${CMAKE_BINARY_DIR})
-message("   DAWN_INCLUDE_DIRS: " ${DAWN_INCLUDE_DIRS})
-message("   DAWN_RUNTIME_LIB: " ${DAWN_RUNTIME_LIB})
-message("   glm_INCLUDE_DIR:   " ${glm_INCLUDE_DIR})
+message("   CMAKE_BUILD_TYPE: " ${CMAKE_BUILD_TYPE})
+message("   CMAKE_BINARY_DIR: " ${CMAKE_BINARY_DIR})
+message("   glm_INCLUDE_DIR:  " ${glm_INCLUDE_DIR})
 message("------------------------------------------------------------------------------")
