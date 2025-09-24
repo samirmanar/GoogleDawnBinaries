@@ -2,6 +2,20 @@
 
 ![Demo](videos/dawn_video.gif)
 
+## How to build the demo project
+
+### Debug
+```bash
+cmake -S . -B ./build
+cmake --build ./build --config Debug --parallel
+```
+
+### Release
+```bash
+cmake -S . -B ./build
+cmake --build ./build --config Release --parallel
+```
+
 ## How to build Dawn
 
 Clone the repo:
@@ -44,7 +58,7 @@ cmake -S . -B ./out/Debug                        ^
 -D TINT_BUILD_CMD_TOOLS=ON                       ^
 -D DAWN_FORCE_SYSTEM_COMPONENT_LOAD=ON
    
-cmake --build ./out/Debug --target webgpu_dawn
+cmake --build ./out/Debug --target webgpu_dawn --parallel
 ```
 
 ### Release
@@ -74,7 +88,7 @@ cmake -S . -B ./out/Release                 ^
 -D TINT_BUILD_CMD_TOOLS=ON                  ^
 -D DAWN_FORCE_SYSTEM_COMPONENT_LOAD=ON
    
-cmake --build ./out/Release --target webgpu_dawn
+cmake --build ./out/Release --target webgpu_dawn --parallel
 ```
 
 ## Linux
@@ -106,7 +120,7 @@ cmake -S . -B ./out/Debug                        \
 -D TINT_BUILD_CMD_TOOLS=ON                       \
 -D DAWN_FORCE_SYSTEM_COMPONENT_LOAD=ON
    
-cmake --build ./out/Debug --target webgpu_dawn
+cmake --build ./out/Debug --target webgpu_dawn --parallel
 ```
 
 ### Release
@@ -136,19 +150,5 @@ cmake -S . -B ./out/Release                 \
 -D TINT_BUILD_CMD_TOOLS=ON                  \
 -D DAWN_FORCE_SYSTEM_COMPONENT_LOAD=ON
    
-cmake --build ./out/Release --target webgpu_dawn
-```
-
-## How to build the demo project
-
-### Debug
-```bash
-cmake -S . -B ./build
-cmake --build ./build --config Debug
-```
-
-### Release
-```bash
-cmake -S . -B ./build
-cmake --build ./build --config Release
+cmake --build ./out/Release --target webgpu_dawn --parallel
 ```
