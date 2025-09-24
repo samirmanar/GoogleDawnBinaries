@@ -1,5 +1,7 @@
 # Google Dawn Binaries
 
+![Demo](videos/dawn_video.gif)
+
 ## How to build Dawn
 
 ### Debug
