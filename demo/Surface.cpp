@@ -2,13 +2,12 @@
 
 #include <iostream>
 
-//#include "GLFW/glfw3.h"
-//#include "webgpu/webgpu_glfw.h"
-
 #include <SDL3/SDL.h>
 
 #if defined(_WIN32)
     #include <windows.h>
+#elif defined(__linux__)
+    #include <X11/Xlib.h>
 #endif
 
 DAWN_BEGIN_NAMESPACE
@@ -36,7 +35,38 @@ bool Surface::create(const wgpu::Instance& instance, SDL_Window* window)
 
     mHandle = instance.CreateSurface(&surfaceDescriptor);
     if (!mHandle) {
-        std::cerr << "Could not create surface!" << std::endl;
+        std::cerr << "Could not create Windows surface!" << std::endl;
+        assert(0);
+        return false;
+    }
+#elif defined(__linux__)
+    ::Display* display = (Display*)SDL_GetPointerProperty(
+            SDL_GetWindowProperties(window),
+            SDL_PROP_WINDOW_X11_DISPLAY_POINTER,
+            nullptr);
+
+    ::Window x11Window = (Window)(uintptr_t)SDL_GetNumberProperty(
+        SDL_GetWindowProperties(window),
+        SDL_PROP_WINDOW_X11_WINDOW_NUMBER,
+        0);
+
+    if (!display || !x11Window) {
+        std::cerr << "Could not get X11 window/display from SDL!" << std::endl;
+        assert(0);
+        return false;
+    }
+
+    wgpu::SurfaceDescriptorFromXlibWindow fromXlibWindow{};
+    fromXlibWindow.display = display;
+    fromXlibWindow.window = x11Window;
+
+    wgpu::SurfaceDescriptor surfaceDescriptor{};
+    surfaceDescriptor.nextInChain = &fromXlibWindow;
+    surfaceDescriptor.label = "MySurface";
+
+    mHandle = instance.CreateSurface(&surfaceDescriptor);
+    if (!mHandle) {
+        std::cerr << "Could not create X11 surface!" << std::endl;
         assert(0);
         return false;
     }

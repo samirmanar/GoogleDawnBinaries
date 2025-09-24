@@ -1,4 +1,5 @@
 #include <iostream>
+#include <filesystem>
 
 #include <webgpu/webgpu_cpp.h>
 
@@ -25,6 +26,9 @@
 int main(int argc, char* argv[])
 {
     bool bSuccess;
+
+    std::filesystem::path cwd = std::filesystem::current_path();
+    std::cout << "Current working directory: " << cwd << std::endl;
 
     if (!SDL_Init(SDL_INIT_VIDEO)) {
         std::cerr << "Couldn't initialize SDL: " << SDL_GetError() << std::endl;
@@ -134,7 +138,11 @@ int main(int argc, char* argv[])
     assert(bSuccess);
 
     dawn::ShaderModule module;
+#if defined(_WIN32)
     bSuccess = module.loadFromFile(device, "../../resources/shader.wgsl");
+#elif defined(__linux__)
+    bSuccess = module.loadFromFile(device, "../resources/shader.wgsl");
+#endif
     assert(bSuccess);
 
     dawn::BindGroupLayout bindGroupLayout;

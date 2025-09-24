@@ -25,22 +25,48 @@ if (NOT TARGET glm)
     set(glm_INCLUDE_DIR ${glm_SOURCE_DIR} PARENT_SCOPE)
 endif()
 
-if (NOT TARGET dawn_debug)
-    # dawn_debug
-    FetchContent_Declare(dawn_debug
-      URL https://github.com/samirmanar/GoogleDawnBinaries/releases/download/2025-09-23/dawn_debug_2025-09-23_win_x64.zip
-      GIT_PROGRESS TRUE
-    )
-    FetchContent_MakeAvailable(dawn_debug)
-    set(Dawn_Debug_DIR ${dawn_debug_SOURCE_DIR} PARENT_SCOPE)
-endif()
+if(WIN32)
 
-if (NOT TARGET dawn_release)
-    # dawn_release
-    FetchContent_Declare(dawn_release
-      URL https://github.com/samirmanar/GoogleDawnBinaries/releases/download/2025-09-23/dawn_release_2025-09-23_win_x64.zip
-      GIT_PROGRESS TRUE
-    )
-    FetchContent_MakeAvailable(dawn_release)
-    set(Dawn_Release_DIR ${dawn_release_SOURCE_DIR} PARENT_SCOPE)
+    if (NOT TARGET dawn_debug)
+        # dawn_debug
+        FetchContent_Declare(dawn_debug
+        URL https://github.com/samirmanar/GoogleDawnBinaries/releases/download/2025-09-23/dawn_debug_2025-09-23_win_x64.zip
+        GIT_PROGRESS TRUE
+        )
+        FetchContent_MakeAvailable(dawn_debug)
+        set(Dawn_Debug_DIR ${dawn_debug_SOURCE_DIR} PARENT_SCOPE)
+    endif()
+
+    if (NOT TARGET dawn_release)
+        # dawn_release
+        FetchContent_Declare(dawn_release
+        URL https://github.com/samirmanar/GoogleDawnBinaries/releases/download/2025-09-23/dawn_release_2025-09-23_win_x64.zip
+        GIT_PROGRESS TRUE
+        )
+        FetchContent_MakeAvailable(dawn_release)
+        set(Dawn_Release_DIR ${dawn_release_SOURCE_DIR} PARENT_SCOPE)
+    endif()
+
+elseif(UNIX AND NOT APPLE)
+
+    if (NOT TARGET dawn_debug)
+        # dawn_debug
+        FetchContent_Declare(dawn_debug
+        URL https://github.com/samirmanar/GoogleDawnBinaries/releases/download/2025-09-23/dawn_debug_2025-09-23_linux_x64.zip
+        GIT_PROGRESS TRUE
+        )
+        FetchContent_MakeAvailable(dawn_debug)
+        set(Dawn_Debug_DIR ${dawn_debug_SOURCE_DIR} PARENT_SCOPE)
+    endif()
+
+    if (NOT TARGET dawn_release)
+        # dawn_release
+        FetchContent_Declare(dawn_release
+        URL https://github.com/samirmanar/GoogleDawnBinaries/releases/download/2025-09-23/dawn_release_2025-09-23_linux_x64.zip
+        GIT_PROGRESS TRUE
+        )
+        FetchContent_MakeAvailable(dawn_release)
+        set(Dawn_Release_DIR ${dawn_release_SOURCE_DIR} PARENT_SCOPE)
+    endif()
+
 endif()
