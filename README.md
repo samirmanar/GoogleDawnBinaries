@@ -4,6 +4,19 @@
 
 ## How to build Dawn
 
+Clone the repo:
+```
+git clone https://dawn.googlesource.com/dawn
+cd dawn
+```
+
+Fetch dependencies (loosely equivalent to gclient sync):
+```
+python tools/fetch_dawn_dependencies.py
+```
+
+## Windows
+
 ### Debug
 
 ```bash
