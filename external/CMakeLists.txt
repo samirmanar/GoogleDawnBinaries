@@ -25,6 +25,7 @@ if (NOT TARGET glm)
     set(glm_INCLUDE_DIR ${glm_SOURCE_DIR} PARENT_SCOPE)
 endif()
 
+# Dawn
 if(WIN32)
 
     if (NOT TARGET dawn_debug)
@@ -34,7 +35,7 @@ if(WIN32)
         GIT_PROGRESS TRUE
         )
         FetchContent_MakeAvailable(dawn_debug)
-        set(Dawn_Debug_DIR ${dawn_debug_SOURCE_DIR} PARENT_SCOPE)
+        set(Dawn_Debug_DIR ${dawn_debug_SOURCE_DIR})
     endif()
 
     if (NOT TARGET dawn_release)
@@ -44,8 +45,13 @@ if(WIN32)
         GIT_PROGRESS TRUE
         )
         FetchContent_MakeAvailable(dawn_release)
-        set(Dawn_Release_DIR ${dawn_release_SOURCE_DIR} PARENT_SCOPE)
+        set(Dawn_Release_DIR ${dawn_release_SOURCE_DIR})
     endif()
+    
+    set(Dawn_DIR "$<IF:$<CONFIG:Debug>,${Dawn_Debug_DIR},${Dawn_Release_DIR}>")
+    set(Dawn_INCLUDE_DIR ${Dawn_DIR}/include PARENT_SCOPE)
+    set(Dawn_LIBRARY ${Dawn_DIR}/lib/webgpu_dawn.lib PARENT_SCOPE)
+    set(DAWN_RUNTIME_LIB ${Dawn_DIR}/bin/webgpu_dawn.dll PARENT_SCOPE)
 
 elseif(UNIX AND NOT APPLE)
 
@@ -56,7 +62,7 @@ elseif(UNIX AND NOT APPLE)
         GIT_PROGRESS TRUE
         )
         FetchContent_MakeAvailable(dawn_debug)
-        set(Dawn_Debug_DIR ${dawn_debug_SOURCE_DIR} PARENT_SCOPE)
+        set(Dawn_Debug_DIR ${dawn_debug_SOURCE_DIR})
     endif()
 
     if (NOT TARGET dawn_release)
@@ -66,7 +72,11 @@ elseif(UNIX AND NOT APPLE)
         GIT_PROGRESS TRUE
         )
         FetchContent_MakeAvailable(dawn_release)
-        set(Dawn_Release_DIR ${dawn_release_SOURCE_DIR} PARENT_SCOPE)
+        set(Dawn_Release_DIR ${dawn_release_SOURCE_DIR})
     endif()
+
+    set(Dawn_DIR "$<IF:$<CONFIG:Debug>,${Dawn_Debug_DIR},${Dawn_Release_DIR}>")
+    set(Dawn_INCLUDE_DIR ${Dawn_DIR}/include PARENT_SCOPE)
+    set(Dawn_LIBRARY ${Dawn_DIR}/lib/libwebgpu_dawn.so PARENT_SCOPE)
 
 endif()
