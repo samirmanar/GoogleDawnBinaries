@@ -16,6 +16,9 @@ cmake -S . -B ./build
 cmake --build ./build --config Release --parallel
 ```
 
+### Visual Studio Code (optional)
+Set "git.autoRepositoryDetection": false in the settings to prevent the *dawn* folder from being tracked by Git.
+
 ## How to build Dawn
 
 Clone the repo:
